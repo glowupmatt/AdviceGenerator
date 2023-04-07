@@ -1,27 +1,36 @@
 import React, { useState, useEffect } from "react";
-
 import "./App.css";
 
 function App() {
   const [text, setText] = useState([]);
 
   const getAdvice = async () => {
-    const res = await fetch("https://api.adviceslip.com/advice");
+    const options = {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Key": process.env.REACT_APP_API_KEY,
+        "X-RapidAPI-Host": process.env.REACT_APP_API_HOST,
+      },
+    };
+    const res = await fetch(
+      "https://fortune-cookie2.p.rapidapi.com/fortune",
+      options
+    );
     const data = await res.json();
 
-    setText(data);
+    setText(data.answer);
   };
 
   useEffect(() => {
     getAdvice();
   }, []);
-  console.log(text.slip.id);
+
   return (
     <div className="App">
       <div className="background-card">
         <div className="main-card-content-container">
-          <p>Advice # {text.slip.id}</p>
-          <h2>{text.slip.advice}</h2>
+          <p>Fortune # {Math.floor(Math.random() * 100)}</p>
+          <h2>{text}</h2>
           <div className="visual-design">
             <hr />
             <div className="rectangle-content-container">
