@@ -1,23 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+
+import "./App.css";
 
 function App() {
+  const [text, setText] = useState([]);
+
+  const getAdvice = async () => {
+    const res = await fetch("https://api.adviceslip.com/advice");
+    const data = await res.json();
+
+    setText(data);
+  };
+
+  useEffect(() => {
+    getAdvice();
+  }, []);
+  console.log(text.slip.id);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="background-card">
+        <div className="main-card-content-container">
+          <p>Advice # {text.slip.id}</p>
+          <h2>{text.slip.advice}</h2>
+          <div className="visual-design">
+            <hr />
+            <div className="rectangle-content-container">
+              <div className="rectangle-container"></div>
+              <div className="rectangle-container"></div>
+            </div>
+            <hr />
+          </div>
+          <div onClick={getAdvice} className="button-container">
+            <button className="img-container">
+              <img src="/icon-dice.svg" />
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
